@@ -1,4 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { io } from "socket.io-client";
+
 export default function App() {
+  const socket = io("http://localhost:3000");
+
   return (
     <div className="bg-gray-500 w-screen h-screen flex justify-center items-center  ">
       <form className="w-1/4 h-1/4 bg-white rounded-xl p-5 ">
