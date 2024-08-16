@@ -1,5 +1,5 @@
-import express from 'express'
-import {Server} from 'socket.io'
+import express,{Request,Response} from 'express'
+import {Server, Socket} from 'socket.io'
 import {createServer} from 'http'
 
 
@@ -17,11 +17,11 @@ const io= new Server(server,{
     }
 })
 
-app.get("/",(req,res)=>{
+app.get("/",(req:Request,res:Response)=>{
     res.send("Welcome chat")
 })
 
-io.on("connection",(socket: { id: any,emit:any,broadcast:any,on:any,join:any })=>{
+io.on("connection",(socket: Socket)=>{
 
     console.log("user connected",socket.id)
     // socket.emit("Welcome",`Welcome to server :: ${socket.id}`)
@@ -32,7 +32,7 @@ io.on("connection",(socket: { id: any,emit:any,broadcast:any,on:any,join:any })=
     io.to(room ).emit("receive-message",message)
     })
 
-    socket.on("join-room", (room: any) => {
+    socket.on("join-room", (room: string) => {
         socket.join(room);
         console.log(`User joined room ${room}`);
       });
