@@ -7,6 +7,7 @@ export default function App() {
   const [room, setRoom] = useState("");
   const [socketId, setSocketId] = useState<string | undefined>(" ");
   const [messages, setMessages] = useState<string[]>([]);
+  const [roomName, setRoomName] = useState("");
 
   const socket = useMemo(() => io("http://localhost:3000"), []);
 
@@ -35,8 +36,32 @@ export default function App() {
     socket.emit("message", { message, room });
   };
 
+  const joinRoomHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    socket.emit("join-room", roomName);
+    setRoomName("");
+  };
+
   return (
     <div className="bg-gray-500 w-screen h-screen flex justify-center items-center  ">
+      <form
+        className="w-1/4 h-2/4 bg-white rounded-xl p-5 "
+        onSubmit={joinRoomHandler}
+      >
+        <label className="text-3xl font-bold ml-28">Enter Room Name :</label>
+
+        <input
+          className="w-80 h-9 rounded-xl border border-black ml-10 mt-2 mb-2 p-2"
+          value={roomName}
+          onChange={(e) => setRoomName(e.target.value)}
+        ></input>
+        <button
+          type="submit"
+          className="flex justify-center bg-blue-900 text-black rounded-xl p-2 text-lg hover:text-xl hover:text-white ml-40"
+        >
+          Join
+        </button>
+      </form>
       <form
         className="w-1/4 h-2/4 bg-white rounded-xl p-5 "
         onSubmit={handleSubmit}

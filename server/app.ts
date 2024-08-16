@@ -21,7 +21,7 @@ app.get("/",(req,res)=>{
     res.send("Welcome chat")
 })
 
-io.on("connection",(socket: { id: any,emit:any,broadcast:any,on:any })=>{
+io.on("connection",(socket: { id: any,emit:any,broadcast:any,on:any,join:any })=>{
 
     console.log("user connected",socket.id)
     // socket.emit("Welcome",`Welcome to server :: ${socket.id}`)
@@ -31,6 +31,11 @@ io.on("connection",(socket: { id: any,emit:any,broadcast:any,on:any })=>{
     //    io.emit("receive-message",data)
     io.to(room ).emit("receive-message",message)
     })
+
+    socket.on("join-room", (room: any) => {
+        socket.join(room);
+        console.log(`User joined room ${room}`);
+      });
 
     socket.on("disconnect",()=>{
        console.log("User disconnected ",socket.id)
